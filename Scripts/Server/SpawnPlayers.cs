@@ -11,9 +11,14 @@ public class SpawnPlayers : MonoBehaviour
 
     public List<PlayerBehaviour> playerBehaviours;
 
+    public PlayerHUD playerUI;
+
     private void Start()
     {
         Vector3 randomPos = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), 0);
-        PhotonNetwork.Instantiate(playerPrefab.name, randomPos, Quaternion.Euler(0,0,4));
+        PlayerBehaviour playerLocal = PhotonNetwork.Instantiate(playerPrefab.name, randomPos, Quaternion.Euler(0,0,4)).
+            GetComponent<PlayerBehaviour>();
+        playerUI.playerBehaviour = playerLocal;
+        
     }
 }

@@ -12,6 +12,7 @@ public class PlayerBehaviour : MonoBehaviour
     Rigidbody rb;
     public float energy = 3;
     public float impulse;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -22,7 +23,8 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if(view.IsMine)
         {
-            energy += Time.deltaTime;
+            if (energy < 5)
+                energy += Time.deltaTime;
 
             if (Input.GetMouseButtonDown(0))
             {
