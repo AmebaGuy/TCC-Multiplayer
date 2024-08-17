@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerHUD : MonoBehaviour
 {
-    Slider slider;
+    public Slider slider;
     public PlayerBehaviour playerBehaviour;
 
     // Update is called once per frame

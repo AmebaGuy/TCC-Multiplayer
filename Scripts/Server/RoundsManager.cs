@@ -8,10 +8,12 @@ public class RoundManager : MonoBehaviourPunCallbacks
 {
     private bool isRoundActive = false;
     public GameObject cylinder;
+    public float rndTime = 0;
 
     void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
+        BetweenObstacles();
     }
 
     void Update()
@@ -29,11 +31,25 @@ public class RoundManager : MonoBehaviourPunCallbacks
         photonView.RPC("RPC_StartRound", RpcTarget.All);
     }
 
+    private IEnumerator timeBetweenObstacles(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        print("Opa, e aí?");
+    }
+
     [PunRPC]
     void RPC_StartRound()
     {
         Debug.Log("Round Started");
         PhotonNetwork.Instantiate(cylinder.name, new Vector3(0, 15, 0), Quaternion.Euler(0, 0, 4));
+        BetweenObstacles();
+    }
+
+    void BetweenObstacles()
+    {
+        rndTime = Random.Range(2, 7);
+        IEnumerator coroutine = timeBetweenObstacles(rndTime);
+        StartCoroutine("coroutine");
     }
 
     public void EndRound()
@@ -50,7 +66,7 @@ public class RoundManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        if (PhotonNetwork.CurrentRoom.PlayerCount < 2 && isRoundActive)
+        if (PhotonNetwork.CurrentRoom.PlayerCount > 2 && isRoundActive)
         {
             EndRound();
         }
